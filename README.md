@@ -68,10 +68,10 @@ python3 main.py
 
 ## 🧠 Autor
 
-**Teddy Castellanos**
-**Javier Sandoval**
-**Allen Espino**
-**Erwin Ramirez**
+1. `Teddy Castellanos`  
+2. `Javier Sandoval`
+3. `Allen Espino`
+4. `Erwin Ramirez`
 💻 Proyecto para curso de **Base de Datos – Universidad Mariano Gálvez**
 
 ---
