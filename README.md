@@ -72,6 +72,7 @@ python3 main.py
 2. `Javier Sandoval`
 3. `Allen Espino`
 4. `Erwin Ramirez`
+
 💻 Proyecto para curso de **Base de Datos – Universidad Mariano Gálvez**
 
 ---
