@@ -49,7 +49,7 @@ Ejecuta los siguientes archivos en orden dentro de Oracle SQL Developer o tu her
 ## ▶️ Ejecución del programa
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 ---
@@ -66,16 +66,12 @@ python main.py
 
 ---
 
-## 📸 Vista previa (opcional)
-
-> *(Puedes agregar capturas de pantalla aquí, por ejemplo)*  
-> `![Interfaz del sistema](./screenshots/menu.png)`
-
----
-
 ## 🧠 Autor
 
-**Teddy Castellanos**  
+**Teddy Castellanos**
+**Javier Sandoval**
+**Allen Espino**
+**Erwin Ramirez**
 💻 Proyecto para curso de **Base de Datos – Universidad Mariano Gálvez**
 
 ---
