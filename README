@@ -1,0 +1,49 @@
+# Sistema de Gestión de Turismo
+
+## Requisitos
+
+- Python 3.7 o superior
+- Base de datos Oracle
+
+## Instalación de dependencias
+
+```bash
+pip install oracledb
+
+
+
+Configuración
+Configurar la conexión a la base de datos en oracledb_config.py:
+
+python
+DB_USER = "turismo"
+DB_PASSWORD = "123456" 
+DB_HOST = "localhost"
+DB_PORT = 1521
+DB_SERVICE = "XE"
+
+
+
+Ejecutar los scripts SQL en el siguiente orden:
+
+creacion de tablas paso 1.sql
+
+triggers paso 2.sql
+
+insersion de datos paso 3.sql
+
+eliminado logico paso 4.sql
+
+Ejecución
+bash
+python main.py
+
+
+Funcionalidades
+Modo Cliente: Ver y editar datos personales
+
+Modo Administrador: CRUD completo de turistas
+
+Eliminado lógico de registros
+
+Auditoría automática con triggers
