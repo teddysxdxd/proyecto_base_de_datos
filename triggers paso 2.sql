@@ -17,25 +17,49 @@ BEGIN
         v_id_registro := :NEW.id_turista;
         INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, valor_actual, id_flag_bitacora)
         VALUES (v_tipo_accion, 'TURISTA', 'ID: ' || v_id_registro || ' - Creado: ' || :NEW.nombre1 || ' ' || :NEW.apellido1, 1);
+        
     ELSIF UPDATING THEN
         v_tipo_accion := 'UPDATE';
         v_id_registro := :OLD.id_turista;
         
-        -- Auditoría detallada para campos clave
+        -- ⭐⭐ PARTE CLAVE AÑADIDA PARA ELIMINADO LÓGICO ⭐⭐
+        -- Si el estado cambia de 'A' (Activo) a 'I' (Inactivo), lo logueamos como DELETE (Lógico)
+        IF :OLD.estado_registro = 'A' AND :NEW.estado_registro = 'I' THEN
+             INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, campo_modificado, valor_anterior, valor_actual, id_flag_bitacora)
+             VALUES ('DELETE (L)', 'TURISTA', 'ESTADO_REGISTRO', 'Activo', 'Inactivo', 3); -- Usando 3 para Eliminado
+        END IF;
+        -- ⭐⭐ FIN PARTE CLAVE ⭐⭐
+        
+        -- Auditoría detallada para otros campos clave (se mantiene la lógica original)
         IF :OLD.nombre1 <> :NEW.nombre1 OR :OLD.apellido1 <> :NEW.apellido1 OR :OLD.direccion <> :NEW.direccion THEN
-            INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, campo_modificado, valor_anterior, valor_actual, id_flag_bitacora)
-            VALUES (v_tipo_accion, 'TURISTA', 'Datos Personales', 'Antiguo Nombre/Apellido/Dir', 'Nuevo Nombre/Apellido/Dir', 2);
+            
+            -- Auditoría de Nombre 1
+            IF :OLD.nombre1 <> :NEW.nombre1 THEN
+                INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, campo_modificado, valor_anterior, valor_actual, id_flag_bitacora)
+                VALUES (v_tipo_accion, 'TURISTA', 'NOMBRE1', :OLD.nombre1, :NEW.nombre1, 2);
+            END IF;
+            
+            -- Auditoría de Apellido 1
+            IF :OLD.apellido1 <> :NEW.apellido1 THEN
+                INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, campo_modificado, valor_anterior, valor_actual, id_flag_bitacora)
+                VALUES (v_tipo_accion, 'TURISTA', 'APELLIDO1', :OLD.apellido1, :NEW.apellido1, 2);
+            END IF;
+            
+            -- Auditoría de Dirección
+            IF :OLD.direccion <> :NEW.direccion THEN
+                INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, campo_modificado, valor_anterior, valor_actual, id_flag_bitacora)
+                VALUES (v_tipo_accion, 'TURISTA', 'DIRECCION', :OLD.direccion, :NEW.direccion, 2);
+            END IF;
+            
         END IF;
 
     ELSIF DELETING THEN
-        v_tipo_accion := 'DELETE';
         v_id_registro := :OLD.id_turista;
         INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, valor_anterior, id_flag_bitacora)
-        VALUES (v_tipo_accion, 'TURISTA', 'ID: ' || v_id_registro || ' - Eliminado: ' || :OLD.nombre1 || ' ' || :OLD.apellido1, 3);
+        VALUES ('DELETE (F)', 'TURISTA', 'ID: ' || v_id_registro || ' - Eliminado: ' || :OLD.nombre1 || ' ' || :OLD.apellido1, 3);
     END IF;
 END;
 /
-
 -- =========================================================================
 -- 2. TRG_AUD_CORREO
 -- =========================================================================
