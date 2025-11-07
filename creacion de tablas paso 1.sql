@@ -4,16 +4,16 @@
 -- ##########################################################################
 
 
-alter session set "_ORACLE_SCRIPT"=true;
+--alter session set "_ORACLE_SCRIPT"=true;
 
 
-create user turismo identified by 123456;
+--create user turismo identified by 123456;
  
-grant all privileges to turismo;
+--grant all privileges to turismo;
 
 -- 1. Eliminación de Tablas (para asegurar una re-ejecución limpia)
 -- Se eliminan en orden inverso por las dependencias de claves foráneas (FK).
-DROP TABLE Turista_Vuelo CASCADE CONSTRAINTS;
+/*DROP TABLE Turista_Vuelo CASCADE CONSTRAINTS;
 DROP TABLE Categoria_Plaza_Ocupada CASCADE CONSTRAINTS;
 DROP TABLE Vuelo CASCADE CONSTRAINTS;
 DROP TABLE Turista_Hotel CASCADE CONSTRAINTS;
@@ -27,7 +27,7 @@ DROP TABLE Bitacora CASCADE CONSTRAINTS;
 DROP TABLE Flag_Bitacora CASCADE CONSTRAINTS;
 DROP TABLE Avion CASCADE CONSTRAINTS;
 DROP TABLE Categoria_Plaza CASCADE CONSTRAINTS;
-
+*/
 ---
 --- CREACIÓN DE ENTIDADES PRINCIPALES Y CATÁLOGOS
 ---

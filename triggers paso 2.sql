@@ -3,6 +3,28 @@
 -- ##########################################################################
 
 -- =========================================================================
+-- PASO PREVIO: ASEGURAR COLUMNA ESTADO_REGISTRO EN TURISTA PARA EVITAR PLS-00049
+-- Nota: Esta columna debe existir antes de crear el trigger que la usa.
+-- Si la columna ya existe de una ejecución previa, este ALTER TABLE generará un error 
+-- que se puede ignorar (usando PL/SQL) o simplemente se asume que se ejecutará sin 
+-- problema si se ejecuta después del paso 1 de creación de tablas.
+-- =========================================================================
+DECLARE
+    col_exists NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO col_exists
+    FROM all_tab_columns
+    WHERE owner = USER
+    AND table_name = 'TURISTA'
+    AND column_name = 'ESTADO_REGISTRO';
+    
+    IF col_exists = 0 THEN
+        EXECUTE IMMEDIATE 'ALTER TABLE Turista ADD (estado_registro CHAR(1) DEFAULT ''A'' NOT NULL)';
+    END IF;
+END;
+/
+
+-- =========================================================================
 -- 1. TRG_AUD_TURISTA
 -- =========================================================================
 CREATE OR REPLACE TRIGGER TRG_AUD_TURISTA
@@ -289,6 +311,22 @@ BEGIN
         INSERT INTO Bitacora (tipo_accion, nombre_tabla_modificada, valor_anterior, id_flag_bitacora)
         VALUES ('DELETE', 'TURISTA_VUELO', 'Turista ID: ' || :OLD.id_turista || ' canceló Vuelo ID: ' || :OLD.id_vuelo, 3);
     END IF;
+END;
+/
+-----
+DECLARE
+    v_index_name VARCHAR2(128);
+BEGIN
+    SELECT index_name INTO v_index_name 
+    FROM all_ind_columns 
+    WHERE table_name = 'CORREO' AND column_name = 'CORREO' AND index_owner = USER AND rownum = 1;
+
+    EXECUTE IMMEDIATE 'DROP INDEX ' || v_index_name;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL; -- No había un índice explícito.
+    WHEN OTHERS THEN
+        NULL; -- Manejar otros errores si es necesario.
 END;
 /
 
